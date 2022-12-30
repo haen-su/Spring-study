@@ -3,6 +3,8 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,24 @@ public class MemberServiceTest {
         Long saveId = memberService.join(member);
 
         // then
-        
+        assertEquals(member, memberRepository.findOne(saveId));
+    }
 
+    @Test(expected = IllegalStateException.class)
+    public void 중복_회원_예외() throws Exception {
+        // given
+        Member member1 = new Member();
+        member1.setName("memberA");
+        memberService.join(member1);
+
+        Member member2 = new Member();
+        member2.setName("memberA");
+
+        //when
+        memberService.join(member2);
+
+        // then
+        fail("예외가 발생해야함");
     }
 
 }
