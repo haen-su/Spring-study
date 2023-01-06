@@ -15,6 +15,10 @@ public class Member {
 
     private String username;
 
+    @OneToOne
+    @JoinColumn(name = "locker_id")
+    private Locker locker;
+
     public Long getId() {
         return id;
     }
